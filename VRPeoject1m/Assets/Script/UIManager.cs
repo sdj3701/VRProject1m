@@ -4,15 +4,40 @@ using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private static UIManager IUiManager = null;
+
+    public static UIManager Instance
     {
-        
+        get
+        {
+            if (IUiManager == null)
+            {
+                IUiManager = FindObjectOfType<UIManager>();
+                if (IUiManager == null)
+                {
+                    GameObject uiManagerObject = new GameObject("UIManager");
+                    IUiManager = uiManagerObject.AddComponent<UIManager>();
+                }
+            }
+            return IUiManager;
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    // UI Manager ½Ì±ÛÅæ »ý¼º  
+    void Awake()
     {
-        
+        if (IUiManager == null)
+        {
+            IUiManager = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
+
+
+
+
 }
