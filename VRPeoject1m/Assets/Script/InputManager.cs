@@ -5,18 +5,26 @@ using UnityEngine.UI;
 
 public class InputManager : MonoBehaviour
 {
-    public Canvas MainUICanvas; // 메뉴 UI 캔버스
     public GameObject MainUIGameOjbect; // 메뉴 UI 게임 오브젝트
+    public Transform UICanvas;
+    private UIPooling uIPooling;
+
+    private void Awake()
+    {
+        uIPooling = new UIPooling(UICanvas);
+    }
 
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if(MainUIGameOjbect.activeSelf == false)
-                MainUIGameOjbect.SetActive(true); // 메뉴 UI 활성화
-            else
-                MainUIGameOjbect.SetActive(false); // 메뉴 UI 비활성화
             
+            if (MainUIGameOjbect.activeSelf == false)
+                uIPooling.GetUI(MainUIGameOjbect.name);
+            else
+                uIPooling.ReturnUI(MainUIGameOjbect.name, MainUIGameOjbect);
+
+
         }
     }
 }

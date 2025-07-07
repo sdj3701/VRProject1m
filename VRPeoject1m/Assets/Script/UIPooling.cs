@@ -5,9 +5,9 @@ using UnityEngine;
 public class UIPooling : MonoBehaviour
 {
     private Dictionary<string, Queue<GameObject>> Pool = new Dictionary<string, Queue<GameObject>>();
-    private Transfrom uiRoot;
+    private Transform uiRoot;
 
-    public UIPooling(Transfrom root)
+    public UIPooling(Transform root)
     {
         uiRoot = root;
     }
@@ -17,19 +17,23 @@ public class UIPooling : MonoBehaviour
         // Pool에 해당 UI가 있으면 꺼내서 활성화
         if (Pool.ContainsKey(name) && Pool[name].Count > 0)
         {
+            Debug.Log("Not Create");
             var ui = Pool[name].Dequeue();
             ui.SetActive(true);
             return ui;
         }
 
+        Debug.Log("Create");
         // Pool에 해당 UI가 없거나 비어있으면 새로 생성
         GameObject prefab = Resources.Load<GameObject>(name);
         GameObject uiInstance = GameObject.Instantiate(prefab, uiRoot);
+        uiInstance.SetActive(true);
+        Debug.Log(uiInstance.name);
         return uiInstance;
 
     }
 
-    pbulic void ReturnUI(string name, GameObject ui)
+    public void ReturnUI(string name, GameObject ui)
     {
         // UI를 Pool에 반환하고 비활성화
         ui.SetActive(false);
